@@ -2,25 +2,25 @@
 @import 'src/assets/styles/mixins.scss';
 
 @include media-full-hd {
-  @import './styles/full-hd';
+    @import './styles/full-hd';
 }
 
 @include media-hd {
-  @import './styles/hd';
+    @import './styles/hd';
 }
 
 @include media-desktop {
-  @import './styles/desktop';
+    @import './styles/desktop';
 }
 
 @include media-landscape {
-  @import './styles/landscape';
+    @import './styles/landscape';
 }
 
 @include media-portrait {
-  @import './styles/portrait';
+    @import './styles/portrait';
 }
 
 @include media-mobile-xl {
-  @import './styles/mobile-xl.scss';
+    @import './styles/mobile-xl.scss';
 }

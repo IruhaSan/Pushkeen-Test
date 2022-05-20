@@ -5,6 +5,7 @@ import GroupImg from '../../assets/img/group_promo.jpg';
 import PromoTitleBlurImg1 from '../../assets/img/promo_title_blur_1.svg';
 import PromoTitleBlurImg2 from '../../assets/img/promo_title_blur_2.svg';
 import classes from './Home.module.scss'
+import CustomerCard from '../../utils/components/CustomerCard';
 
 const Home = () => {
   return (
@@ -30,9 +31,15 @@ const Home = () => {
         </Container>
       </Container>
       <Container className={classes.customers}>
-          <div className={classes.tickets}>
+          <div className={classes['customers-tickets']}>
                 <span>Купили билеты</span>
-                <p>100/<strong>1000</strong></p>
+                <p>932/<strong>1000</strong></p>
+          </div>
+          <div className={classes['customers-list']}>
+            <CustomerCard name='Семен' surname='Иванов' addressCity='Санкт-петербург'/>
+            <CustomerCard name='Надежда' surname='Николаева' addressCity='Москва'/>
+            <CustomerCard name='Петр' surname='Сабуров' addressCity='Сочи' />
+            <CustomerCard name='Мария' surname='Гончарова' addressCity='Москва' />
           </div>
       </Container>
     </div>
