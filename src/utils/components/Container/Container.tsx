@@ -6,12 +6,13 @@ type IProps = {
     wrapperClassName?: string;
     className?: string;
     children?: any;
+    isExtended?: boolean;
 }
 
-const Container: FC<IProps> = ({ wrapperClassName, className, children }) => {
+const Container: FC<IProps> = ({ wrapperClassName, className, children, isExtended }) => {
   return (
-      <div className={clsx(classes.root, wrapperClassName)}>
-          <div className={clsx(classes.content, className)}>
+      <div className={clsx(classes.wrapper, wrapperClassName)}>
+          <div className={clsx(isExtended && classes.extended, className)}>
                 { children }
           </div>
       </div>
