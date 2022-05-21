@@ -4,8 +4,9 @@ import Container from '../../utils/components/Container';
 import PublicationImg from '../../assets/img/publication.svg';
 import classes from './Profile.module.scss'; 
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchUser, fetchUserPosts, User, UserPost } from '../../api/users';
+import { getUser, User } from '../../api/users';
 import { getPostsRoute } from '../../utils/functions/generators';
+import { getPosts, Post } from '../../api/posts';
 
 type IParams = {
   id: string;
@@ -14,7 +15,7 @@ type IParams = {
 const Profile = () => {
   const { id } = useParams<IParams>();
   const [user, setUser] = useState<User>();
-  const [userPosts, setUserPosts] = useState<UserPost[]>([]);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
   const navigate = useNavigate();
   const memoGo = useCallback((path: string) => () => {
     navigate(path);
@@ -23,10 +24,10 @@ const Profile = () => {
     return userPosts.splice(0, 2);
   }, [userPosts])
   useEffect(() => {
-    fetchUser(id).then((res) => {
+    getUser(id).then((res) => {
       setUser(res);
     })
-    fetchUserPosts(id).then(res => setUserPosts(res))
+    getPosts(id).then(res => setUserPosts(res))
   }, [id])
   return (
     <div className={classes.root}>
@@ -47,7 +48,7 @@ const Profile = () => {
         <div>
             {
               memoPreviewPosts.map((post) => (                
-                <div onClick={memoGo(getPostsRoute(id || 1))}>
+                <div onClick={memoGo(getPostsRoute(id || 1))} key={post.id}>
                 <div>
                   <span>{post.title}</span>
                   <p>12.01.22</p>

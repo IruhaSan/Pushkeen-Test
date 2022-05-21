@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { fetchPostComments, fetchUserPosts, UserPost } from '../../api/users';
 import Container from '../../utils/components/Container'
-import CommentImg from '../../assets/img/comment.png';
 import classes from './Posts.module.scss';
+import { getPosts, Post } from '../../api/posts';
+import { Comment, createComment, getComments, ICreateComment } from '../../api/comments';
+import PostCard from '../../components/PostCard';
 
 type IParams = {
     id: string;
@@ -11,38 +12,42 @@ type IParams = {
 
 const Posts = () => {
     const { id } = useParams<IParams>();
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [activePostIndexList, setActivePostIndexList] = useState<number[]>([]);
-    const updatePostActiveState = useCallback((index: number) => () => {
-        if (activePostIndexList.includes(index)) setActivePostIndexList(activePostIndexList.filter((el) => el !== index)) 
-        else setActivePostIndexList([...activePostIndexList, index])
-    }, [activePostIndexList])
-    const [posts, setPosts] = useState<UserPost[]>([])
+    const [postCommentsDict, setPostCommentsDict] = useState<Record<number, Comment[]>>({})
+    const [posts, setPosts] = useState<Post[]>([])
+
+    const handleCreateComment = useCallback((postId: number) => (data: ICreateComment) => {
+        console.log(data);
+        createComment(postId, data)
+    }, [])
     useEffect(() => {
-        fetchUserPosts(id).then(res => setPosts(res))
-    }, [id, posts])
+        getPosts(id).then(res => setPosts(res))
+    }, [id])
+    useEffect(() => {
+        Promise.all(posts.map((post) => getComments(post.id))).then((data) => {
+            setPostCommentsDict(
+                data.reduce((accum, commentList, postIndex) => ({
+                    ...accum, 
+                    [posts[postIndex].id]: commentList
+                }),{})
+            )
+        })
+    }, [posts])
     return (
         <Container className={classes.root}>
             <h1>Все посты</h1>
             <p>Найдено: {posts.length}</p>
-            {
-                posts.map((post, postIndex) => (
-                    <div className={classes.post} key={post.id}>
-                        <h1>{post.title}</h1>
-                        <p>{post.body}</p>
-                        <div>
-                            <img src={CommentImg} alt="comment" onClick={updatePostActiveState(postIndex)} />
-                        </div>
-                        {
-                            post && activePostIndexList.includes(postIndex) && (
-                                <div className={classes['post-comment']}>
-                                    <h1>Здарова</h1>
-                                </div>
-                            )
-                        }
-                    </div>
-                ))
-            }
+            <div className={classes.content}>                
+                {
+                    posts.map((post) => (
+                        <PostCard 
+                            post={post} 
+                            comments={postCommentsDict[post.id] || []} 
+                            onCommentSubmit={handleCreateComment(post.id)} 
+                            key={post.id}
+                        />
+                    ))
+                }
+            </div>
         </Container>
     )
 }

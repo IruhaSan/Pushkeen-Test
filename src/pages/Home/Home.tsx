@@ -5,7 +5,7 @@ import GroupImg from '../../assets/img/group_promo.jpg';
 import PromoTitleBlurImg1 from '../../assets/img/promo_title_blur_1.svg';
 import PromoTitleBlurImg2 from '../../assets/img/promo_title_blur_2.svg';
 import classes from './Home.module.scss'
-import { fetchAllUsers, User } from '../../api/users';
+import { getAllUsers, User } from '../../api/users';
 import { useNavigate } from 'react-router-dom';
 import RouteEnum from '../../const/routes';
 import { generateRoute, getProfileRoute } from '../../utils/functions/generators';
@@ -21,7 +21,7 @@ const Home = () => {
       navigate(path);
   }, [navigate])
   useEffect(() => {
-    fetchAllUsers().then((res) => setCustomerList(res))
+    getAllUsers().then((res) => setCustomerList(res))
   }, [])
    return (
     <div className={classes.root}>
