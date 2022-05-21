@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from '../../ui/Button'
 import Container from '../../utils/components/Container'
 import GroupImg from '../../assets/img/group_promo.jpg';
 import PromoTitleBlurImg1 from '../../assets/img/promo_title_blur_1.svg';
 import PromoTitleBlurImg2 from '../../assets/img/promo_title_blur_2.svg';
 import classes from './Home.module.scss'
-import CustomerCard from '../../utils/components/CustomerCard';
+import { fetchAllUsers, User } from '../../api/users';
+import { useNavigate } from 'react-router-dom';
+import RouteEnum from '../../const/routes';
+import { generateRoute, getProfileRoute } from '../../utils/functions/generators';
+ 
 
 const Home = () => {
-  return (
+  const [customerList, setCustomerList] = useState<User[]>([])
+  const memoCustomerList = useMemo(() => {
+    return customerList.slice(0, 4);
+  }, [customerList])
+  const navigate = useNavigate();
+  const memoGo = useCallback((path: string) => () => {
+      navigate(path);
+  }, [navigate])
+  useEffect(() => {
+    fetchAllUsers().then((res) => setCustomerList(res))
+  }, [])
+   return (
     <div className={classes.root}>
       <Container className={classes.promo} wrapperClassName={classes.wrapper} isExtended>
         <img src={GroupImg} alt="" />
@@ -31,16 +46,42 @@ const Home = () => {
         </Container>
       </Container>
       <Container className={classes.customers}>
-          <div className={classes['customers-tickets']}>
-                <span>Купили билеты</span>
-                <p>932/<strong>1000</strong></p>
+        <div className={classes['customers-tickets']}>
+          <span>Купили билеты</span>
+          <p>{customerList.length}/<strong>1000</strong></p>
+        </div>
+        <div className={classes['customers-list']}>
+          {
+            memoCustomerList.map((user) => (
+              <div className={classes['customers-list__user']} key={user.id} >
+                <h1>{user.name}</h1>
+                <h2>{user.address.city}</h2>
+                <Button onClick={memoGo(getProfileRoute(user.id))}>Смотреть профиль</Button>
+              </div>
+            ))
+          }
+        </div>
+      </Container>
+      <Container className={classes.block}>
+          <div className={classes.location}>
+            <h1>О площадке</h1>
+            <div className={classes['location-content']}>
+              <div className={classes['location-content__aside']}/>
+              <div className={classes['location-content__text']}>
+                <h6>Современная площадка для проведения концертов и других мероприятий любой сложности.</h6>
+                <p>Мы предоставляем всю необходимую для организаторов инфраструктуру и готовые решения под все основные задачи любого события, а также современное оборудование, соответствующее самым высоким мировым стандартам. </p>
+              </div>
+            </div>
           </div>
-          <div className={classes['customers-list']}>
-            <CustomerCard name='Семен' surname='Иванов' addressCity='Санкт-петербург'/>
-            <CustomerCard name='Надежда' surname='Николаева' addressCity='Москва'/>
-            <CustomerCard name='Петр' surname='Сабуров' addressCity='Сочи' />
-            <CustomerCard name='Мария' surname='Гончарова' addressCity='Москва' />
+          <div className={classes.form}>
+            <h1>Оставить заявку на проведение концерта</h1>
+            <textarea placeholder='Расскажите о вашем предложении ' />
+            <Button onClick={console.log}>Отправить</Button>
           </div>
+      </Container>
+      <Container className={classes.about}>
+        <h1>О группе</h1>
+        <p>Twenty One Pilots — американский дуэт из Колумбуса, штат Огайо. Группа образовалась в 2009 году и на данный момент состоит из Тайлера Джозефа и Джоша Дана. Коллектив самостоятельно выпустил два альбома: Twenty One Pilots в 2009 и Regional at Best в 2011.</p>
       </Container>
     </div>
   )

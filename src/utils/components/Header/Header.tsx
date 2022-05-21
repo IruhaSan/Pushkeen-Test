@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import ROUTEPATH from '../../../const/routePaths';
+import RouteEnum from '../../../const/routes';
 import Button from '../../../ui/Button';
 import Container from '../Container'
 import classes from './Header.module.scss';
@@ -10,7 +10,7 @@ const Header = () => {
   return (
         <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
             <div className={classes.navigateToHome}>
-                <Button onClick={() => navigate(ROUTEPATH.HOME)}>Concert club</Button>
+                <Button onClick={() => navigate(RouteEnum.HOME)}>Concert club</Button>
             </div>
             <div className={classes.navigateToProfile}>
                 <Button onClick={console.log}>Версия для слабовидящих</Button>

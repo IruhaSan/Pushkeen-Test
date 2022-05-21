@@ -1,0 +1,165 @@
+.root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    &-wrapper {
+        border: 1px solid black;
+        margin-top: 35px;
+    }
+    & > h1 {
+        font-family: 'Alegreya Sans SC';
+        font-weight: 500;
+        font-size: 35px;
+        color: #000000;
+    }
+}
+
+.address {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    & > p {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        color: #000000;
+        padding: 14px 18px;
+        border-left: 1px solid black;
+    }
+    & > div {
+        display: flex;
+        & > button {
+            color: white;
+            font-family: 'Open Sans';
+            font-weight: 600;
+            font-size: 11px;
+            padding: 10px 20px;
+            background-color: #101010;
+            outline: none;
+            border-top: none;
+            border-bottom: none;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+            &:last-child {
+                margin-left: 1px;
+            }
+            &:hover {
+                background-color: white;
+                color: black;
+            }
+        }
+    }
+    &-wrapper {
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+    }
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-wrapper {
+        margin-top: 35px;
+        border: 1px solid black;
+    }
+    & > h1 {
+        font-family: 'Alegreya Sans SC';
+        font-weight: 500;
+        font-size: 35px;
+        color: #000000;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    & > div {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 33px;
+        & > div {
+            padding: 16px 35px;
+            width: 100%;
+            flex-basis: 49.3%;
+            border: 1px solid #000000;
+            & > div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                & > span {
+                    width: 80%;
+                    font-family: 'Open Sans';
+                    line-height: 1.5;
+                    font-weight: 700;
+                    font-size: 17px;
+                    text-transform: capitalize;
+                    color: #000000;
+                    margin-bottom: 5px;
+                }
+                & > p {
+                    font-family: 'Open Sans';
+                    font-weight: 700;
+                    font-size: 12px;
+                    line-height: 1.5;
+                    margin-top: 5px;
+                }
+            }
+            & > p {
+                font-family: 'Open Sans';
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 1.5;
+                color: rgba(0, 0, 0, 0.41);
+                margin-top: 5px;
+            }
+            &:hover {
+                border: 1px solid rgba($color: #000000, $alpha: 0.2);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.publications {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    &-wrapper {
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+    }
+    &-list {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        padding-bottom: 40px;
+        & > img {
+            margin-right: 15px;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    & > h1 {
+        font-family: 'Alegreya Sans SC';
+        font-weight: 500;
+        font-size: 35px;
+        color: #000000;
+        padding-top: 25px;
+    }
+}
