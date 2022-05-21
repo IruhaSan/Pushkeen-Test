@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from '../../ui/Button';
 import Container from '../../utils/components/Container';
 import PublicationImg from '../../assets/img/publication.svg';
 import classes from './Profile.module.scss'; 
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchUser, fetchUserPosts, User, UserPost } from '../../api/users';
+import { getPostsRoute } from '../../utils/functions/generators';
 
 type IParams = {
   id: string;
@@ -15,6 +15,10 @@ const Profile = () => {
   const { id } = useParams<IParams>();
   const [user, setUser] = useState<User>();
   const [userPosts, setUserPosts] = useState<UserPost[]>([]);
+  const navigate = useNavigate();
+  const memoGo = useCallback((path: string) => () => {
+    navigate(path);
+  }, [navigate])
   const memoPreviewPosts = useMemo(() => {
     return userPosts.splice(0, 2);
   }, [userPosts])
@@ -43,7 +47,7 @@ const Profile = () => {
         <div>
             {
               memoPreviewPosts.map((post) => (                
-              <div>
+                <div onClick={memoGo(getPostsRoute(id || 1))}>
                 <div>
                   <span>{post.title}</span>
                   <p>12.01.22</p>

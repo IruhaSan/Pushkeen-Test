@@ -12,3 +12,7 @@ export const generateRoute = (route: RouteEnum, data: Record<string, string | nu
 export const getProfileRoute = (userId: string | number) => generateRoute(RouteEnum.PROFILE, {
     id: userId
 })
+
+export const getPostsRoute = (userId: string | number) => generateRoute(RouteEnum.POSTS, {
+    id: userId
+})
