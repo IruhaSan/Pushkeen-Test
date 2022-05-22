@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from '../../ui/Button';
 import Container from '../../utils/components/Container';

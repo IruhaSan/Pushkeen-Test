@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import { getAllUsers, User } from '../../api/users';
 import UserCard from '../../components/UserCard';
 import Button, { ButtonSizeEnum } from '../../ui/Button/Button';
@@ -24,7 +23,7 @@ const UserList = () => {
             <div className={classes.list}>
                 {
                     memoUserList.map((user) => (
-                        <UserCard data={user} />
+                        <UserCard data={user} key={user.id}/>
                     ))
                 }
             </div>

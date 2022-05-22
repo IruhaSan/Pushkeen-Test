@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {  useEffect, useMemo, useState } from 'react'
 import Button from '../../ui/Button'
 import Container from '../../utils/components/Container'
 import GroupImg from '../../assets/img/group_promo.jpg';
@@ -7,7 +7,6 @@ import PromoTitleBlurImg2 from '../../assets/img/promo_title_blur_2.svg';
 import classes from './Home.module.scss'
 import { getAllUsers, User } from '../../api/users';
 import { useNavigate } from 'react-router-dom';
-import { getProfileRoute } from '../../utils/functions/generators';
 import { ButtonSizeEnum } from '../../ui/Button/Button';
 import UserCard from '../../components/UserCard';
 import RouteEnum from '../../const/routes';

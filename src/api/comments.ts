@@ -11,7 +11,7 @@ export type OGetComments = Comment[]
 
 export const getComments = async (postId: number | undefined): Promise<OGetComments> => {
     if (postId === undefined) return [];
-    return axios.get<any, AxiosResponse<OGetComments>>(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`).then(res => res.data);
+    return axios.get<any, AxiosResponse<OGetComments>>(`${process.env.REACT_APP_API_BASE}/comments?postId=${postId}`).then(res => res.data);
 }
 
 
@@ -21,7 +21,7 @@ export type OCreateComment = Comment
 export const createComment = async (postId: number | undefined, data: ICreateComment): Promise<OCreateComment | undefined> => {
     if (postId === undefined) return;
     return axios.post<any, AxiosResponse<OCreateComment>, AxiosRequestConfig<ICreateComment>>(
-        `https://jsonplaceholder.typicode.com/posts/${postId}/comments`, 
+        `${process.env.REACT_APP_API_BASE}/posts/${postId}/comments`, 
         {
             data
         }

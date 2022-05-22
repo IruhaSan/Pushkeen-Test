@@ -19,13 +19,13 @@ export type User = {
 export type OGetAllUsers = User[]
 
 export const getAllUsers = (): Promise<OGetAllUsers> => {
-    return axios.get<any, AxiosResponse<OGetAllUsers>>('https://jsonplaceholder.typicode.com/users').then(res => res.data || []);
+    return axios.get<any, AxiosResponse<OGetAllUsers>>(`${process.env.REACT_APP_API_BASE}/users`).then(res => res.data || []);
 }
 
 export type OGetUser = User
 
 export const getUser = async (id: string | undefined): Promise<OGetUser | undefined> => {
     if (id === undefined) return
-    return axios.get<any, AxiosResponse<OGetUser>>(`https://jsonplaceholder.typicode.com/users/${id}`).then(res => res.data);
+    return axios.get<any, AxiosResponse<OGetUser>>(`${process.env.REACT_APP_API_BASE}/users/${id}`).then(res => res.data);
 }
 
