@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 export type User = {
     id: number;
+    username: string;
     name: string;
     email: string;
     phone: string;

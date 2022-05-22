@@ -1,7 +1,8 @@
 enum RouteEnum {
     HOME = '/',
-    PROFILE = '/profile/:id',
-    POSTS = '/posts/:id'
+    PROFILE = '/user/:id',
+    POSTS = '/posts/:id',
+    USER_LIST = '/userlist'
 }
 
 export default RouteEnum;

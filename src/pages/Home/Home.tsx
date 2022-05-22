@@ -7,8 +7,10 @@ import PromoTitleBlurImg2 from '../../assets/img/promo_title_blur_2.svg';
 import classes from './Home.module.scss'
 import { getAllUsers, User } from '../../api/users';
 import { useNavigate } from 'react-router-dom';
+import { getProfileRoute } from '../../utils/functions/generators';
+import { ButtonSizeEnum } from '../../ui/Button/Button';
+import UserCard from '../../components/UserCard';
 import RouteEnum from '../../const/routes';
-import { generateRoute, getProfileRoute } from '../../utils/functions/generators';
  
 
 const Home = () => {
@@ -17,9 +19,6 @@ const Home = () => {
     return customerList.slice(0, 4);
   }, [customerList])
   const navigate = useNavigate();
-  const memoGo = useCallback((path: string) => () => {
-      navigate(path);
-  }, [navigate])
   useEffect(() => {
     getAllUsers().then((res) => setCustomerList(res))
   }, [])
@@ -40,27 +39,24 @@ const Home = () => {
           </div>
           <div className={classes['promo-content__controls']}>
             <div />
-            <Button onClick={console.log}>Купить билет</Button>
+            <Button size={ButtonSizeEnum.MEDIUM} onClick={console.log}>Купить билет</Button>
             <div />
           </div>
         </Container>
       </Container>
       <Container className={classes.customers}>
-        <div className={classes['customers-tickets']}>
+        <div className={classes['customers-title']}>
           <span>Купили билеты</span>
           <p>{customerList.length}/<strong>1000</strong></p>
         </div>
         <div className={classes['customers-list']}>
           {
             memoCustomerList.map((user) => (
-              <div className={classes['customers-list__user']} key={user.id} >
-                <h1>{user.name}</h1>
-                <h2>{user.address.city}</h2>
-                <Button onClick={memoGo(getProfileRoute(user.id))}>Смотреть профиль</Button>
-              </div>
+               <UserCard data={user} key={user.id} />
             ))
           }
         </div>
+        <Button size={ButtonSizeEnum.MEDIUM} onClick={() => navigate(RouteEnum.USER_LIST)}>Смотреть все</Button>
       </Container>
       <Container className={classes.block}>
           <div className={classes.location}>
@@ -76,7 +72,7 @@ const Home = () => {
           <div className={classes.form}>
             <h1>Оставить заявку на проведение концерта</h1>
             <textarea placeholder='Расскажите о вашем предложении ' />
-            <Button onClick={console.log}>Отправить</Button>
+            <Button size={ButtonSizeEnum.TINY} onClick={console.log}>Отправить</Button>
           </div>
       </Container>
       <Container className={classes.about}>

@@ -2,7 +2,8 @@
     padding: 15px 30px;
     font-size: 11px;
     font-family: 'Open sans';
-    font-weight: bold;
+    font-weight: 600;
+    transition: all 0.2s linear;
     &.isFullWidth {
         width: 100%;
     }
@@ -13,7 +14,7 @@
             border: 1px solid white;
             &:hover {
                 color: black;
-                border: 1px solid black;
+                border-color: black;
                 background-color: white;
             }
         }
@@ -23,15 +24,21 @@
             border: 1px solid black;
             &:hover {
                 color: white;
-                border: 1px solid white;
+                border-color: white;
                 background-color: black;
             }
         }
     }
+    &.tiny {
+        font-size: 11px;
+        padding: 10px 20px;
+    }
     &.small {
         font-size: 11px;
+        padding: 15px 30px;
     }
     &.medium {
         font-size: 14px;
+        padding: 12px 60px;
     }
 }

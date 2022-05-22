@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getUser, User } from '../../api/users';
 import { getPostsRoute } from '../../utils/functions/generators';
 import { getPosts, Post } from '../../api/posts';
+import { ButtonSizeEnum } from '../../ui/Button/Button';
+import clsx from 'clsx';
 
 type IParams = {
   id: string;
@@ -15,6 +17,7 @@ type IParams = {
 const Profile = () => {
   const { id } = useParams<IParams>();
   const [user, setUser] = useState<User>();
+  const [isOpenDetails ,setOpenDetailsState] = useState(false);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const navigate = useNavigate();
   const memoGo = useCallback((path: string) => () => {
@@ -39,10 +42,33 @@ const Profile = () => {
         <p>{user?.email}</p>
         <p>{user?.phone}</p>
         <div>
-          <Button onClick={console.log}>Написать сообщение</Button>
-          <Button onClick={console.log}>Предложить сходить на концерт</Button>
+          <Button size={ButtonSizeEnum.TINY} onClick={console.log}>Написать сообщение</Button>
+          <Button size={ButtonSizeEnum.TINY} onClick={console.log}>Предложить сходить на концерт</Button>
         </div>
       </Container>
+      {
+        isOpenDetails && (
+          <Container className={classes.details} wrapperClassName={classes['details-wrapper']}>
+            <div>
+              <span>Логин</span>
+              <p>{user?.username}</p>
+            </div>
+            <div>
+              <span>Название компании</span> 
+              <p>{user?.company.name}</p>
+            </div>
+            <div>
+              <span>Подписка</span> 
+              <p>{user?.company.bs}</p>
+            </div>
+            <div>
+              <span>Веб сайт</span>
+              <a href={`https://${user?.website}`} target='_blank'>{user?.website}</a>
+            </div>
+          </Container>
+        )
+      }
+      <div className={clsx(classes['address-openArrow'], isOpenDetails && classes.isActive)} onClick={() => setOpenDetailsState(!isOpenDetails)} />
       <Container className={classes.posts} wrapperClassName={classes['posts-wrapper']}>
         <h1>Посты</h1>
         <div>

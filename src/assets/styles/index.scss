@@ -1,31 +1,8 @@
 @import "./reset";
+@import "./fonts.scss";
 @import "./variables";
 @import "./mixins";
 
 * {
     box-sizing: border-box;
-}
-
-@font-face {
-    font-family: 'Lato';
-    src: url('./fonts/Lato2OFLWeb/Lato/fonts/Lato-Bold.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-}
-
-@font-face {
-    font-family: 'LatoSemibold';
-    src: url('./fonts/Lato2OFLWeb/Lato/fonts/Lato-Semibold.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-}
-
-@font-face {
-    font-family: 'LatoWeb';
-    src:  url('./fonts/Lato2OFLWeb/Lato/fonts/Lato-Regular.ttf') format('truetype');
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
 }

@@ -13,37 +13,32 @@
 
 
 
-.navigateToHome {
-    width: 30%;
-    & > button {
-        font-size: 28px;
-        font-weight: 700;
-        font-family: 'Alegreya Sans SC';
-        background-color: transparent;
-        color: white;
-        border: none;
-        cursor: pointer;
-        text-transform: uppercase;
-        text-align: center;
-        padding-top: 16px;
-        padding-bottom: 8px;
-    }
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Alegreya Sans SC';
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 16px;
+    padding-bottom: 8px;
 }
 
-.navigateToProfile {
+.controls {
     display: flex;
     align-items: center;
     & > button {
-        font-family: 'Open sans';
-        font-size: 14px;
-        font-weight: 600;
-        color: black;
-        border: none;
-        background-color: white;
-        padding: 12px 40px;
-        cursor: pointer;
+        margin-right: 12px;
+        font-family: 'ProximaNova';
+        font-weight: bold;
         &:first-child {
-            margin-right: 12px;
+            padding: 12px 40px;
+        }
+        &:last-child {
+            margin-right: 0;
         }
     }
 }

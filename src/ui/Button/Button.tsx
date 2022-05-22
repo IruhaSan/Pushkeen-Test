@@ -3,8 +3,9 @@ import React, { FC } from 'react'
 import classes from './Button.module.scss';
 
 export enum ButtonSizeEnum {
+  TINY = 'tiny',
   SMALL = 'small',
-  MEDIUM = 'medium'
+  MEDIUM = 'medium',
 }
 
 export enum ButtonColorEnum {
@@ -18,7 +19,7 @@ export enum ButtonStyleEnum {
 }
 
 type IProps = {
-    children: any;
+    children: React.ReactNode;
     onClick: {(): void};
     className?: string;
     style?: ButtonStyleEnum;
@@ -43,7 +44,7 @@ const Button: FC<IProps> = ({
           classes[style],
           classes[color],
           classes[size],
-          isFullWidth && 'isFullWidth',
+          isFullWidth && classes.isFullWidth,
           className
         )} 
         onClick={onClick}

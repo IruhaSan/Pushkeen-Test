@@ -15,9 +15,9 @@ const Posts = () => {
     const [postCommentsDict, setPostCommentsDict] = useState<Record<number, Comment[]>>({})
     const [posts, setPosts] = useState<Post[]>([])
 
-    const handleCreateComment = useCallback((postId: number) => (data: ICreateComment) => {
+    const handleCreateComment = useCallback((postId: number) => async (data: ICreateComment) => {
         console.log(data);
-        createComment(postId, data)
+        return createComment(postId, data)
     }, [])
     useEffect(() => {
         getPosts(id).then(res => setPosts(res))

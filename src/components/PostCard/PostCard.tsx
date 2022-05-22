@@ -1,35 +1,36 @@
 import React, { FC, useCallback, useState } from 'react'
-import Container from '../../utils/components/Container';
 import CommentImg from '../../assets/img/comment.png';
 import classes from './PostCard.module.scss';
 import Button from '../../ui/Button';
 import { Post } from '../../api/posts';
 import { Comment, ICreateComment } from '../../api/comments';
-import clsx from 'clsx';
 import { ButtonSizeEnum } from '../../ui/Button/Button';
 
 type IProps = {
     post: Post;
     comments: Comment[];
-    onCommentSubmit: (data: ICreateComment) => void;
+    onCommentSubmit: (data: ICreateComment) => Promise<Comment | unknown>;
+}
+
+const initialValues: ICreateComment = {
+    name: '',
+    email: '',
+    body: ''
 }
 
 const PostCard: FC<IProps> = ({ post, comments, onCommentSubmit }) => {
     const [areCommentsOpen, setCommentsOpenState] = useState(false);
     const [isFormOpen, setFormOpenState] = useState(false);
-    const [formInput, setFormInput] = useState<ICreateComment>({
-        name: '',
-        email: '',
-        body: ''
-    })
+    const [formInput, setFormInput] = useState<ICreateComment>(initialValues)
     const updateFormInput = useCallback((key: keyof ICreateComment) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormInput({
             ...formInput,
             [key]: e.target.value
         })
     }, [formInput])
-    const memoOnCommentSubmit = useCallback(() => {
-        onCommentSubmit(formInput)
+    const memoOnCommentSubmit = useCallback(async () => {
+        const data = await onCommentSubmit(formInput)
+        if (data) setFormInput(initialValues)
     }, [formInput, onCommentSubmit])
     return (
         <div className={classes.root} key={post.id}>
@@ -38,7 +39,10 @@ const PostCard: FC<IProps> = ({ post, comments, onCommentSubmit }) => {
             <img 
                 src={CommentImg} 
                 alt="comment" 
-                onClick={() => setCommentsOpenState(!areCommentsOpen)} 
+                onClick={() => {
+                    setCommentsOpenState(!areCommentsOpen)
+                    setFormOpenState(false)
+                }} 
             />
             {
                 areCommentsOpen && (
@@ -54,19 +58,24 @@ const PostCard: FC<IProps> = ({ post, comments, onCommentSubmit }) => {
                                 </div>
                             ))
                         }
-                        <Button 
-                            onClick={() => setFormOpenState(!isFormOpen)}
-                            isFullWidth
-                            size={ButtonSizeEnum.MEDIUM}
-                        >
-                            Оставить комментарий
-                        </Button>
+                        
+                        {
+                            !isFormOpen && (
+                                <Button
+                                    onClick={() => setFormOpenState(!isFormOpen)}
+                                    isFullWidth
+                                    size={ButtonSizeEnum.MEDIUM}
+                                >
+                                    Оставить комментарий
+                                </Button>
+                            )
+                        }
                         {
                             isFormOpen && (
                                 <div className={classes['comments-form']}>
-                                    <input type="text" placeholder='Имя' onChange={updateFormInput('name')} />
-                                    <input type="text" placeholder='E-Mail' onChange={updateFormInput('email')} />
-                                    <textarea placeholder='Текст комментария' onChange={updateFormInput('body')} />
+                                    <input value={formInput.name} type="text" placeholder='Имя' onChange={updateFormInput('name')} />
+                                    <input value={formInput.email} type="text" placeholder='E-Mail' onChange={updateFormInput('email')} />
+                                    <textarea value={formInput.body} placeholder='Текст комментария' onChange={updateFormInput('body')} />
                                     <Button 
                                         onClick={memoOnCommentSubmit}
                                         isFullWidth
