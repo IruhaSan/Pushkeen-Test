@@ -10,17 +10,27 @@ import { useNavigate } from 'react-router-dom';
 import { ButtonSizeEnum } from '../../ui/Button/Button';
 import UserCard from '../../components/UserCard';
 import RouteEnum from '../../const/routes';
+import { fetchAll } from '../../store/users.slice';
+import useAppDispatch from '../../utils/hooks/useAppDispatch';
+import useAppStore from '../../utils/hooks/useAppStore';
+import { useSelector } from 'react-redux';
+import useAppSelector from '../../utils/hooks/useAppSelector';
  
 
 const Home = () => {
-  const [customerList, setCustomerList] = useState<User[]>([])
+  const customerList = useAppSelector<User[]>(state => state.users.all);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const memoCustomerList = useMemo(() => {
     return customerList.slice(0, 4);
   }, [customerList])
-  const navigate = useNavigate();
+
   useEffect(() => {
-    getAllUsers().then((res) => setCustomerList(res))
-  }, [])
+    dispatch(fetchAll());
+  }, [dispatch])
+
    return (
     <div className={classes.root}>
       <Container className={classes.promo} wrapperClassName={classes.wrapper} isExtended>

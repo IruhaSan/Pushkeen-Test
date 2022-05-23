@@ -1,4 +1,9 @@
 import RouteEnum from "../../const/routes"
+import { StoreSliceEnum, ThunkStatusEnum } from "../../types/store";
+
+
+
+export const generateThunkName = (reducerName: StoreSliceEnum, actionName: string, status?: ThunkStatusEnum) => ([reducerName, actionName, status].filter(el => el).join('/'))
 
 export const generateRoute = (route: RouteEnum, data: Record<string, string | number>): string => {
     let buffer: string = route;
