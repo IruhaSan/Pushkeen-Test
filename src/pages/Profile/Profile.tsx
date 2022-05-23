@@ -10,6 +10,10 @@ import { getPostsRoute } from '../../utils/functions/generators';
 import { getPosts, Post } from '../../api/posts';
 import { ButtonSizeEnum } from '../../ui/Button/Button';
 import clsx from 'clsx';
+import useAppSelector from '../../utils/hooks/useAppSelector';
+import { fetchByUserId as fetchPostsByUserId } from '../../store/posts.slice';
+import useAppDispatch from '../../utils/hooks/useAppDispatch';
+import { fetchById as fetchUserById } from '../../store/users.slice';
 
 type IParams = {
   id: string;
@@ -17,22 +21,37 @@ type IParams = {
 
 const Profile = () => {
   const { id } = useParams<IParams>();
-  const [user, setUser] = useState<User>();
   const [isOpenDetails ,setOpenDetailsState] = useState(false);
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [user, setUser] = useState<User>();
+  const storePosts = useAppSelector<Post[] | undefined>((state) => id ? state.posts.filters.byUserId[+id]?.data : undefined)
+  const storeUser = useAppSelector<User | undefined>((state) => id ? state.users.filters.byId[+id] : undefined)
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const memoGo = useCallback((path: string) => () => {
     navigate(path);
   }, [navigate])
-  const memoPreviewPosts = useMemo(() => {
-    return userPosts.splice(0, 2);
-  }, [userPosts])
+  const memoPosts = useMemo(() => {
+    return posts.slice(0, 2);
+  }, [posts])
+
   useEffect(() => {
-    getUser(id).then((res) => {
-      setUser(res);
-    })
-    getPosts(id).then(res => setUserPosts(res))
-  }, [id])
+    if (storeUser) setUser(storeUser) 
+    else dispatch(fetchUserById(!id ? undefined : +id))
+      .unwrap()
+      .then((data) => {
+        setUser(data)
+      })
+  }, [dispatch, id, storeUser])
+
+  useEffect(() => {
+    if (!user?.id) return
+    if (storePosts) setPosts(storePosts)
+    else dispatch(fetchPostsByUserId(user.id))
+  }, [dispatch, storePosts, user?.id])
+
   return (
     <div className={classes.root}>
       <Container className={classes.about} wrapperClassName={classes['about-wrapper']}>
@@ -73,17 +92,17 @@ const Profile = () => {
       <Container className={classes.posts} wrapperClassName={classes['posts-wrapper']}>
         <h1>Посты</h1>
         <div>
-            {
-              memoPreviewPosts.map((post) => (                
-                <div onClick={memoGo(getPostsRoute(id || 1))} key={post.id}>
+          {
+            id && memoPosts.map((post) => (                
+              <div onClick={memoGo(getPostsRoute(id))} key={post.id}>
                 <div>
                   <span>{post.title}</span>
                   <p>12.01.22</p>
                 </div>
                 <p>{post.body}</p>
               </div>
-                ))
-              }
+            ))
+          }
         </div>
       </Container>
       <Container className={classes.publications} wrapperClassName={classes['publications-wrapper']}>

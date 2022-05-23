@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllUsers, User } from "../api/users";
+import { getAllUsers, getUser, User } from "../api/users";
 import { StoreSliceEnum } from "../types/store";
 import { generateThunkName } from "../utils/functions/generators";
 
 enum UserAsyncActionsEnum {
-    FETCH_ALL = 'fetchAll'
+    FETCH_ALL = 'fetchAll',
+    FETCH_BY_ID = 'fetchById',
 }
 
-type UserReducerType = {
+type UsersReducerType = {
     totalCount: number,
     all: User[],
     filters: {
@@ -15,13 +16,17 @@ type UserReducerType = {
     },
 }
 
-export const setAll = (state: UserReducerType, data: User[]) => {
+export const setAll = (state: UsersReducerType, data: User[]) => {
     state.all = data;
     state.totalCount = data.length
     state.filters.byId = data.reduce((accum, user) => ({
         ...accum,
         [user.id]: user
     }), {})
+}
+
+export const setUser = (state: UsersReducerType, data: User) => {
+    state.filters.byId = data;
 }
 
 export const fetchAll = createAsyncThunk(
@@ -32,7 +37,16 @@ export const fetchAll = createAsyncThunk(
     }
 )
 
-const initialState: UserReducerType = {
+export const fetchById = createAsyncThunk(
+    generateThunkName(StoreSliceEnum.USERS, UserAsyncActionsEnum.FETCH_BY_ID),
+    async (userId: User['id'] | undefined, thunkApi) => {
+        const data = await getUser(userId);
+        thunkApi.fulfillWithValue(data);
+        return data;
+    }
+)
+
+const initialState: UsersReducerType = {
     totalCount: 0,
     all: [],
     filters: {
@@ -50,8 +64,11 @@ const userSlice = createSlice({
         },
         [fetchAll.rejected.type]: (state) => {
             setAll(state, [])
-        }
-
+        },
+        
+        [fetchById.fulfilled.type]: (state, action: PayloadAction<User>) => {
+            setUser(state, action.payload)
+        },
     }
 })
 

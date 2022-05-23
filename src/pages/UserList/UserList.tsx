@@ -11,8 +11,8 @@ import classes from './UserList.module.scss';
 const UserList = () => {
     const [pageIndex, setPageIndex] = useState(1);
     const userList = useAppSelector<{
-        data: User[],
         totalCount: number,
+        data: User[],
     }>((state) => ({
         totalCount: state.users.totalCount,
         data: state.users.all.slice(0, pageIndex * 4)

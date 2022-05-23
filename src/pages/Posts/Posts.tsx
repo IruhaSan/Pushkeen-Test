@@ -20,7 +20,8 @@ const Posts = () => {
         return createComment(postId, data)
     }, [])
     useEffect(() => {
-        getPosts(id).then(res => setPosts(res))
+        if (!id) return;
+        getPosts(+id).then(res => setPosts(res))
     }, [id])
     useEffect(() => {
         Promise.all(posts.map((post) => getComments(post.id))).then((data) => {

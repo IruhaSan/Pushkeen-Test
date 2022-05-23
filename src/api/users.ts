@@ -24,7 +24,7 @@ export const getAllUsers = (): Promise<OGetAllUsers> => {
 
 export type OGetUser = User
 
-export const getUser = async (id: string | undefined): Promise<OGetUser | undefined> => {
+export const getUser = async (id: User['id'] | undefined): Promise<OGetUser | undefined> => {
     if (id === undefined) return
     return axios.get<any, AxiosResponse<OGetUser>>(`${process.env.REACT_APP_API_BASE}/users/${id}`).then(res => res.data);
 }
