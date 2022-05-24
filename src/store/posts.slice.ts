@@ -31,7 +31,6 @@ export const fetchByUserId = createAsyncThunk(
 )
 
 export const setPostsByUserId = (state: PostsReducerType, userId: User['id'], data: Post[]) => {
-    console.log(data)
     state.filters.byUserId[userId] = {
         totalCount: data.length,
         data

@@ -2,9 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import Container from '../../utils/components/Container'
 import classes from './Posts.module.scss';
-import { getPosts, Post } from '../../api/posts';
-import { Comment, createComment, getComments, ICreateComment } from '../../api/comments';
+import { Post } from '../../api/posts';
+import { ICreateComment } from '../../api/comments';
 import PostCard from '../../components/PostCard';
+import useAppSelector from '../../utils/hooks/useAppSelector';
+import { fetchByUserId as fetchPostsByUserId } from '../../store/posts.slice';
+import useAppDispatch from '../../utils/hooks/useAppDispatch';
+import { create as createComment } from '../../store/postComments.slice';
 
 type IParams = {
     id: string;
@@ -12,27 +16,24 @@ type IParams = {
 
 const Posts = () => {
     const { id } = useParams<IParams>();
-    const [postCommentsDict, setPostCommentsDict] = useState<Record<number, Comment[]>>({})
     const [posts, setPosts] = useState<Post[]>([])
+    const storePosts = useAppSelector<Post[] | undefined>((state) => id ? state.posts.filters.byUserId[+id]?.data : undefined)
+
+    const dispatch = useAppDispatch();
 
     const handleCreateComment = useCallback((postId: number) => async (data: ICreateComment) => {
-        console.log(data);
-        return createComment(postId, data)
-    }, [])
+        return dispatch(createComment({
+            postId,
+            data
+        })).unwrap()
+    }, [dispatch])
+
     useEffect(() => {
         if (!id) return;
-        getPosts(+id).then(res => setPosts(res))
-    }, [id])
-    useEffect(() => {
-        Promise.all(posts.map((post) => getComments(post.id))).then((data) => {
-            setPostCommentsDict(
-                data.reduce((accum, commentList, postIndex) => ({
-                    ...accum, 
-                    [posts[postIndex].id]: commentList
-                }),{})
-            )
-        })
-    }, [posts])
+        if (storePosts) setPosts(storePosts)
+        else dispatch(fetchPostsByUserId(+id))
+    }, [dispatch, id, storePosts])
+
     return (
         <Container className={classes.root}>
             <h1>Все посты</h1>
@@ -41,8 +42,7 @@ const Posts = () => {
                 {
                     posts.map((post) => (
                         <PostCard 
-                            post={post} 
-                            comments={postCommentsDict[post.id] || []} 
+                            data={post} 
                             onCommentSubmit={handleCreateComment(post.id)} 
                             key={post.id}
                         />

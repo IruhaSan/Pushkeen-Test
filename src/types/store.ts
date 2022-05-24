@@ -1,6 +1,7 @@
 export enum StoreSliceEnum {
     USERS = 'users',
-    POSTS = 'posts'
+    POSTS = 'posts',
+    POST_COMMENTS = 'postComments'
 }
 
 export enum ThunkStatusEnum {
