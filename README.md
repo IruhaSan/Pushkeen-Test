@@ -5,21 +5,26 @@
 ## Initial setup
 1. Config `.env.development.local` or `.env.production.local` files depending on your environment, based on `.env`
 2. Install dependecies (using [`Yarn`](https://yarnpkg.com/))  
-    ```yarn
+    ```
+        yarn
     ``` 
     or 
-    ```yarn install
+    ```
+        yarn install
     ```
 
 ## Getting started
 1. Start development server
-    ```yarn start
+    ```
+        yarn start
     ```
 
 ## Start production server 
 1. Build project  
-    ```yarn build
+    ```
+        yarn build
     ``` 
 2. Start static server  
-    ```node server.js
+    ```
+        node server.js
     ``` 
